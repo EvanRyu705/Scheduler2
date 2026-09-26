@@ -7,3 +7,46 @@
 * {
   box-sizing: border-box;
 }
+
+.group {
+  grid-template-columns: 2fr 5fr 3fr;
+}
+
+.flex {
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+
+.calendar {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: 5% 35% 7% 9% 9% 37%;
+}
+
+.mid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 15% 1fr 10% 1fr 15%;
+}
+
+
+.bigbtn {
+  font-size: 20px;
+  padding-top: 25px;
+  height:450px;
+  width: 450px;
+  border-radius: 5%;
+}
+
+.button {
+  border-radius: 35%;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

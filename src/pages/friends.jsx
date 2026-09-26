@@ -1,8 +1,8 @@
-export default function TemplatePage() {
+export default function FriendsPage() {
 
     return (
         <div className="flex-grow">
-            Template
+            Friends
         </div>
     );
 }

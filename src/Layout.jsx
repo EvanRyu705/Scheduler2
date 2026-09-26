@@ -1,31 +1,36 @@
 import { useState } from 'react'
 import { Link, Route, Routes } from 'react-router'
 import HomePage from './pages/home'
-import TemplatePage from './pages/template'
-import TemplateWithParamPage from './pages/template-with-param'
+import FriendsPage from './pages/friends'
+import GroupsPage from './pages/groups'
 
 const ROUTES = [
   { path: "/", element: <HomePage /> },
-  { path: "/template", element: <TemplatePage /> },
-  { path: "/template/:v", element: <TemplateWithParamPage /> },
+  { path: "/friends", element: <FriendsPage /> },
+  { path: "/groups", element: <GroupsPage /> },
 ]
 
 export default function Layout() {
 
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-base-100">
       {/* Header */}
-      <nav className="p-5 space-x-3 flex bg-base-300">
+      <nav className="p-5 space-x-3 flex top bg-base-300">
+        <button class="btn btn-square btn-ghost">
+          +
+        </button>
+        <div></div>
         <Link to="/">
           <button className="btn btn-ghost">Home</button>
         </Link>
-        <Link to="/template">
-          <button className="btn btn-ghost">Template</button>
+        <Link to="/friends">
+          <button className="btn btn-ghost">Friends</button>
         </Link>
-        <Link to="/template/test">
-          <button className="btn btn-ghost">Template Parameter</button>
+        <Link to="/groups">
+          <button className="btn btn-ghost">Groups</button>
         </Link>
+        <div></div>
       </nav>
       {/* Main */}
       <Routes>
