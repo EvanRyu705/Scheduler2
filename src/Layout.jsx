@@ -1,43 +1,28 @@
-import { useState } from 'react'
-import { Link, Route, Routes } from 'react-router'
+import { Link, Route, Routes, useLocation } from 'react-router'
 import HomePage from './pages/home'
-import FriendsPage from './pages/friends'
 import GroupsPage from './pages/groups'
 
 const ROUTES = [
   { path: "/", element: <HomePage /> },
-  { path: "/friends", element: <FriendsPage /> },
   { path: "/groups", element: <GroupsPage /> },
 ]
 
 export default function Layout() {
-
-
+  const location = useLocation();
   return (
     <div className="min-h-screen flex flex-col bg-base-100">
-      {/* Header */}
-      <nav className="p-5 space-x-3 flex top bg-base-300">
-        <button class="btn btn-square btn-ghost">
-          +
-        </button>
-        <div></div>
-        <Link to="/">
-          <button className="btn btn-ghost">Home</button>
-        </Link>
-        <Link to="/friends">
-          <button className="btn btn-ghost">Friends</button>
-        </Link>
-        <Link to="/groups">
-          <button className="btn btn-ghost">Groups</button>
-        </Link>
-        <div></div>
+      <nav className="navbar border-b border-base-300 bg-base-100 px-6">
+        <div className="text-xl font-bold">Scheduler</div>
+        <div className="ml-auto flex gap-2">
+          <Link className={`btn ${location.pathname === '/' ? 'btn-neutral' : 'btn-ghost'}`} to="/">Home</Link>
+          <Link className={`btn ${location.pathname === '/groups' ? 'btn-neutral' : 'btn-ghost'}`} to="/groups">Groups</Link>
+        </div>
       </nav>
-      {/* Main */}
-      <Routes>
-        {ROUTES.map((r) => <Route key={r.path} path={r.path} element={r.element} />)}
-      </Routes>
-      {/* Footer */}
-      <div className="p-5 bg-base-300">Footer</div>
+      <main className="flex-1">
+        <Routes>
+          {ROUTES.map((r) => <Route key={r.path} path={r.path} element={r.element} />)}
+        </Routes>
+      </main>
     </div>
   )
 }
