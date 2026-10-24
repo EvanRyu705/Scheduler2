@@ -323,7 +323,7 @@ export default function HomePage() {
         <div className="mx-auto grid w-full max-w-7xl gap-8 p-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(300px,1fr)] lg:p-10">
             <section className="grid content-start gap-6">
                 <header className="space-y-2">
-                    <h1 className="text-3xl font-bold sm:text-4xl">Make time for your people.</h1>
+                    <h1 className="text-3xl font-bold sm:text-4xl">Prepare for events</h1>
                     <p className="max-w-2xl text-base-content/70">
                         See what’s coming up and find a day that works for everyone.
                     </p>
