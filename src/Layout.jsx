@@ -12,7 +12,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col bg-base-100">
       <nav className="navbar border-b border-base-300 bg-base-100 px-6">
-        <div className="text-xl font-bold">Scheduler</div>
+        <div className="text-xl font-bold">Timely</div>
         <div className="ml-auto flex gap-2">
           <Link className={`btn ${location.pathname === '/' ? 'btn-neutral' : 'btn-ghost'}`} to="/">Home</Link>
           <Link className={`btn ${location.pathname === '/groups' ? 'btn-neutral' : 'btn-ghost'}`} to="/groups">Groups</Link>
