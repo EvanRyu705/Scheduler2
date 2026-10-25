@@ -2,8 +2,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
 import Calendar from '../components/calendar';
+import EventAttendance from '../components/event-attendance';
 import EventResponses from '../components/event-responses';
 import { EVENTS, GROUPS, MESSAGES, USERS } from '../data';
+import { getAttendancePoints, updateEventAttendance } from '../utils/event-attendance';
 import { updateEventResponses } from '../utils/event-responses';
 
 const STORAGE_KEY = 'scheduler-groups-page';
@@ -139,11 +141,17 @@ export default function HomePage() {
     const [eventTime, setEventTime] = useState(() => toDateTimeLocalValue(new Date()));
     const [eventError, setEventError] = useState('');
     const [responseError, setResponseError] = useState('');
+    const [attendanceError, setAttendanceError] = useState('');
     const [currentRankPosition, setCurrentRankPosition] = useState(null);
     const leaderboardRef = useRef(null);
     const currentRankRowRef = useRef(null);
     const { events, groups } = homeData;
-    const rankings = [...RANKINGS].sort((a, b) => b.points - a.points);
+    const attendancePoints = getAttendancePoints(events);
+    const rankings = RANKINGS.map((person) =>
+        person.isCurrentUser
+            ? { ...person, points: person.points + attendancePoints }
+            : person
+    ).sort((a, b) => b.points - a.points);
     const currentRank = rankings.findIndex((person) => person.isCurrentUser) + 1;
     const selectedEvents = events.filter(
         (event) => new Date(event.time).toDateString() === selectedDate.toDateString()
@@ -212,6 +220,29 @@ export default function HomePage() {
         } catch (error) {
             console.error('Unable to save your event response.', error);
             setResponseError('Your response could not be saved. Please try again.');
+        }
+    }
+
+    function updateAttendance(event, attendanceKey) {
+        const eventIndex = events.indexOf(event);
+        if (eventIndex < 0) return;
+
+        const updatedData = {
+            ...homeData,
+            events: events.map((item, index) =>
+                index === eventIndex
+                    ? updateEventAttendance(item, attendanceKey)
+                    : item
+            ),
+        };
+
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedData));
+            setHomeData(updatedData);
+            setAttendanceError('');
+        } catch (error) {
+            console.error('Unable to save your event attendance.', error);
+            setAttendanceError('Your attendance could not be saved. Please try again.');
         }
     }
 
@@ -405,6 +436,9 @@ export default function HomePage() {
                         {responseError && (
                             <p className="text-sm text-error" role="alert">{responseError}</p>
                         )}
+                        {attendanceError && (
+                            <p className="text-sm text-error" role="alert">{attendanceError}</p>
+                        )}
                         {selectedEvents.length ? (
                             <ul className="grid gap-3">
                                 {selectedEvents.map((event) => (
@@ -427,6 +461,10 @@ export default function HomePage() {
                                                 event={event}
                                                 onSelect={updateEventResponse}
                                                 people={getGroupMembers(event.group_id, groups)}
+                                            />
+                                            <EventAttendance
+                                                event={event}
+                                                onSelect={updateAttendance}
                                             />
                                         </div>
                                     </li>

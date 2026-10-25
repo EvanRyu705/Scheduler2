@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { EVENTS, GROUPS, MESSAGES, USERS } from '../data';
+import EventAttendance from '../components/event-attendance';
 import EventResponses from '../components/event-responses';
+import { updateEventAttendance } from '../utils/event-attendance';
 import { updateEventResponses } from '../utils/event-responses';
 
 const STORAGE_KEY = 'scheduler-groups-page';
@@ -67,6 +69,20 @@ export default function GroupsPage() {
             ...current,
             events: current.events.map((item, index) =>
                 index === eventIndex ? updateEventResponses(item, option) : item
+            ),
+        }));
+    }
+
+    function updateAttendance(event, attendanceKey) {
+        const eventIndex = data.events.indexOf(event);
+        if (eventIndex < 0) return;
+
+        setData((current) => ({
+            ...current,
+            events: current.events.map((item, index) =>
+                index === eventIndex
+                    ? updateEventAttendance(item, attendanceKey)
+                    : item
             ),
         }));
     }
@@ -347,6 +363,10 @@ export default function GroupsPage() {
                                                 event={event}
                                                 onSelect={updateEventResponse}
                                                 people={USERS.filter((user) => activeGroup.ids.includes(user.user_id))}
+                                            />
+                                            <EventAttendance
+                                                event={event}
+                                                onSelect={updateAttendance}
                                             />
                                         </article>
                                     ))}
